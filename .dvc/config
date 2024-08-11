@@ -1,0 +1,4 @@
+[core]
+    remote = data_drift_remote
+['remote "data_drift_remote"']
+    url = gdrive://1xwCh-Wc7nkkTXOcrP2J_fj6slnAtZTyq
