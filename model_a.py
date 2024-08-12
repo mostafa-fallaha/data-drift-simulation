@@ -46,16 +46,18 @@ y = df_A.Daily_Avg_Installs
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.30, random_state = 42)
 
-polynomial = PolynomialFeatures(degree=2, include_bias= False, interaction_only = False)
-X_train_poly = polynomial.fit_transform(X_train)
-X_test_poly = polynomial.transform(X_test)
 
-linear_pol_model = LinearRegression()
-linear_pol_model.fit(X_train_poly, y_train)
-pred_poly = linear_pol_model.predict(X_test_poly)
 
-rmse = root_mean_squared_error(y_test, pred_poly)
-r2 = r2_score(y_test, pred_poly)
+# polynomial = PolynomialFeatures(degree=2, include_bias= False, interaction_only = False)
+# X_train_poly = polynomial.fit_transform(X_train)
+# X_test_poly = polynomial.transform(X_test)
+
+linear_model = LinearRegression()
+linear_model.fit(X_train, y_train)
+y_pred = linear_model.predict(X_test)
+
+rmse = root_mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
 print(rmse)
 print(r2)
 
@@ -77,11 +79,11 @@ with mlflow.start_run(run_name=runname) as mlflow_run:
 
 
     # Log the model
-    mlflow.sklearn.log_model(linear_pol_model, "model")
+    mlflow.sklearn.log_model(linear_model, "model")
 
     # Register the model
     model_uri = f"runs:/{run_id}/model"
-    mlflow.register_model(model_uri=model_uri, name="linear_pol_model_a")
+    mlflow.register_model(model_uri=model_uri, name="linear_model_a")
     
     # Log artifacts
     mlflow.log_artifact(script_path)
