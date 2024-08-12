@@ -15,7 +15,7 @@ commit_message = args.commit_message
 
 # Run DVC and Git commands
 subprocess.run(["dvc", "add", data_file], check=True)
-subprocess.run(["git", "add", dvc_file, gitignore_file, 'run_versioning.ps1',
+subprocess.run(["git", "add", dvc_file, gitignore_file, 'run_versioning.ps1', '.gitignore', 'model_a.py',
                 'version_new_data.py', 'README.md', 'new_data/new_data.ipynb'], check=True)
 subprocess.run(["git", "commit", "-m", commit_message], check=True)
 subprocess.run(["dvc", "push"], check=True)
