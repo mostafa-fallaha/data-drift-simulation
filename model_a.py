@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures, LabelEncoder
 from sklearn.linear_model import Lasso, LinearRegression
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import SGDRegressor
 from sklearn.metrics import root_mean_squared_error, r2_score, accuracy_score
 import mlflow
 import mlflow.sklearn
@@ -46,44 +46,51 @@ y = df_A.Daily_Avg_Installs
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.30, random_state = 42)
 
-
-
-# polynomial = PolynomialFeatures(degree=2, include_bias= False, interaction_only = False)
-# X_train_poly = polynomial.fit_transform(X_train)
-# X_test_poly = polynomial.transform(X_test)
-
-linear_model = LinearRegression()
-linear_model.fit(X_train, y_train)
-y_pred = linear_model.predict(X_test)
+model = SGDRegressor(max_iter=1000, tol=1e-3)
+model.partial_fit(X_train, y_train)
+y_pred = model.predict(X_test)
 
 rmse = root_mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 print(rmse)
 print(r2)
 
+# polynomial = PolynomialFeatures(degree=2, include_bias= False, interaction_only = False)
+# X_train_poly = polynomial.fit_transform(X_train)
+# X_test_poly = polynomial.transform(X_test)
+
+# linear_model = LinearRegression()
+# linear_model.fit(X_train, y_train)
+# y_pred = linear_model.predict(X_test)
+
+# rmse = root_mean_squared_error(y_test, y_pred)
+# r2 = r2_score(y_test, y_pred)
+# print(rmse)
+# print(r2)
+
 # ============================== Logging the model with MLFlow============================================================
-script_path = os.path.abspath(__file__)
-runname = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+# script_path = os.path.abspath(__file__)
+# runname = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 
-# Start MLflow run
-mlflow.set_experiment('google_apps_model')
-with mlflow.start_run(run_name=runname) as mlflow_run:
-    run_id = mlflow_run.info.run_id
+# # Start MLflow run
+# mlflow.set_experiment('google_apps_model')
+# with mlflow.start_run(run_name=runname) as mlflow_run:
+#     run_id = mlflow_run.info.run_id
 
-    # Log model parameters
-    mlflow.log_param("degree", 2)
+#     # Log model parameters
+#     mlflow.log_param("degree", 2)
 
-    # Log metrics
-    mlflow.log_metric("rmse", rmse)
-    mlflow.log_metric("r2", r2)
+#     # Log metrics
+#     mlflow.log_metric("rmse", rmse)
+#     mlflow.log_metric("r2", r2)
 
 
-    # Log the model
-    mlflow.sklearn.log_model(linear_model, "model")
+#     # Log the model
+#     mlflow.sklearn.log_model(linear_model, "model")
 
-    # Register the model
-    model_uri = f"runs:/{run_id}/model"
-    mlflow.register_model(model_uri=model_uri, name="linear_model_a")
+#     # Register the model
+#     model_uri = f"runs:/{run_id}/model"
+#     mlflow.register_model(model_uri=model_uri, name="linear_model_a")
     
-    # Log artifacts
-    mlflow.log_artifact(script_path)
+#     # Log artifacts
+#     mlflow.log_artifact(script_path)
