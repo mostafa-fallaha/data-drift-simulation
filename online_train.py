@@ -50,7 +50,7 @@ y_pred = model.predict(X_test)
 
 rmse = root_mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
-print("rmse:",rmse)
+print("\nrmse:",rmse)
 print("r2:",r2)
 
 filepath = Path('data/model_data.csv')
