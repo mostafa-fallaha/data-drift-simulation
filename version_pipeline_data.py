@@ -21,3 +21,5 @@ subprocess.run(["git", "add", dvc_file, gitignore_file, 'run_versioning.ps1', '.
 subprocess.run(["git", "commit", "-m", commit_message], check=True)
 subprocess.run(["dvc", "push"], check=True)
 subprocess.run(["git", "push"], check=True)
+
+subprocess.run(["python", "online_train.py"], check=True)
