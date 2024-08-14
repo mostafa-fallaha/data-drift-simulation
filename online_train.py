@@ -18,9 +18,9 @@ df2 = pd.read_csv("data/model_data.csv")
 combined = pd.concat([df, df2, df2]).drop_duplicates(keep=False)
 df_diff = combined
 
-print(df.shape)
-print(df2.shape)
-print(df_diff.shape)
+print("new data:",df.shape)
+print("memory data:",df2.shape)
+print("difference:",df_diff.shape)
 
 # Step 1: Convert boolean columns to 0 and 1
 df_diff['Free'] = df_diff['Free'].replace({True: 1, False: 0})
@@ -50,8 +50,8 @@ y_pred = model.predict(X_test)
 
 rmse = root_mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
-print(rmse)
-print(r2)
+print("rmse:",rmse)
+print("r2:",r2)
 
 filepath = Path('data/model_data.csv')
 filepath.parent.mkdir(parents=True, exist_ok=True)
